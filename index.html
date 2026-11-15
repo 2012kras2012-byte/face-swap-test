@@ -134,8 +134,12 @@
         });
 
         payBtn.addEventListener('click', () => {
-            tg.showAlert(`Вы выбрали шаблон №${selectedTemplateId}. Здесь появится окно оплаты Telegram Stars.`);
-        });
+    // Отправляем данные в бота
+    tg.sendData(JSON.stringify({
+        action: "generate",
+        template_id: selectedTemplateId
+    }));
+});
     </script>
 </body>
 </html>
