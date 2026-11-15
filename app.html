@@ -8,10 +8,10 @@
 </head>
 <body style="background-color: #1c1c1e; color: white; text-align: center; padding-top: 50px; font-family: sans-serif;">
     <h2>Проверка связи</h2>
-    <p>Нажми на кнопку ниже:</p>
+    <p>Нажми на кнопку ниже, чтобы закрыть приложение:</p>
     
-    <button onclick="tg.sendData('ТЕСТ_УСПЕШЕН')" style="background-color: #2481cc; color: white; padding: 20px; font-size: 20px; border: none; border-radius: 10px; margin-top: 20px;">
-        Отправить сигнал боту
+    <button onclick="window.Telegram.WebApp.close()" style="background-color: #e74c3c; color: white; padding: 20px; font-size: 20px; border: none; border-radius: 10px; margin-top: 20px;">
+        Закрыть приложение
     </button>
 
     <script>
