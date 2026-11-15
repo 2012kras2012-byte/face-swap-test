@@ -16,9 +16,27 @@
         .template-info { padding: 8px; text-align: center; }
         .template-title { font-size: 12px; font-weight: bold; margin-bottom: 4px; }
         .template-price { font-size: 11px; color: #f1c40f; }
+        
         .action-section { margin-top: 25px; display: none; }
+        
         .upload-btn { background-color: #2481cc; color: white; border: none; padding: 15px; font-size: 16px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer; }
+        
         #preview { max-width: 100%; border-radius: 12px; margin-top: 15px; display: none; border: 2px solid #2481cc; }
+        
+        /* Стили для кнопки "Выбрать другое фото" */
+        .reset-btn {
+            background-color: #e74c3c; /* Красная кнопка */
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 8px;
+            width: 100%;
+            margin-top: 10px;
+            display: none; /* Скрыта по умолчанию */
+            cursor: pointer;
+        }
+
         #payBtn { background-color: #28a745; color: white; border: none; padding: 15px; font-size: 16px; border-radius: 10px; width: 100%; font-weight: bold; margin-top: 15px; display: none; cursor: pointer; }
     </style>
 </head>
@@ -46,8 +64,14 @@
     <div class="action-section" id="actionSection">
         <h3 style="text-align:center; margin-bottom: 10px;">Шаг 2: Ваше лицо</h3>
         <input type="file" id="fileInput" accept="image/*" style="display: none;">
+        
         <button class="upload-btn" id="uploadBtn">Выбрать фото из галереи</button>
+        
         <img id="preview" alt="Ваше фото" />
+        
+        <!-- НОВАЯ КНОПКА ДЛЯ СБРОСА ФОТО -->
+        <button class="reset-btn" id="resetBtn">Выбрать другое фото</button>
+        
         <button id="payBtn">Оплатить и сгенерировать</button>
     </div>
 
@@ -61,19 +85,37 @@
         const uploadBtn = document.getElementById('uploadBtn');
         const preview = document.getElementById('preview');
         const payBtn = document.getElementById('payBtn');
+        const resetBtn = document.getElementById('resetBtn'); // Новая переменная
 
         window.selectTemplate = function(id, title, price) {
             selectedTemplateId = id;
             document.querySelectorAll('.template-card').forEach(card => { card.classList.remove('selected'); });
             event.currentTarget.classList.add('selected');
             actionSection.style.display = 'block';
-            preview.style.display = 'none';
-            payBtn.style.display = 'none';
-            uploadBtn.style.display = 'block';
+            
+            // Сбрасываем состояние при выборе нового шаблона
+            resetPhoto();
+            
             actionSection.scrollIntoView({ behavior: 'smooth' });
         };
 
+        // Функция сброса фото
+        function resetPhoto() {
+            preview.src = '';
+            preview.style.display = 'none';
+            payBtn.style.display = 'none';
+            resetBtn.style.display = 'none';
+            uploadBtn.style.display = 'block';
+            fileInput.value = ''; // Очищаем инпут
+        }
+
         uploadBtn.addEventListener('click', () => { fileInput.click(); });
+
+        // Клик по кнопке "Выбрать другое фото"
+        resetBtn.addEventListener('click', () => {
+            resetPhoto(); // Сбрасываем
+            fileInput.click(); // Сразу открываем галерею заново
+        });
 
         fileInput.addEventListener('change', function(event) {
             const file = event.target.files[0];
@@ -82,7 +124,9 @@
                 reader.onload = function(e) {
                     preview.src = e.target.result;
                     preview.style.display = 'block';
+                    
                     uploadBtn.style.display = 'none'; 
+                    resetBtn.style.display = 'block'; // Показываем кнопку сброса
                     payBtn.style.display = 'block'; 
                 }
                 reader.readAsDataURL(file);
