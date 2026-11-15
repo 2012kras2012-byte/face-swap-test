@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест кнопки</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body style="background-color: #1c1c1e; color: white; text-align: center; padding-top: 50px; font-family: sans-serif;">
+    <h2>Проверка связи</h2>
+    <p>Нажми на кнопку ниже:</p>
+    
+    <button onclick="tg.sendData('ТЕСТ_УСПЕШЕН')" style="background-color: #2481cc; color: white; padding: 20px; font-size: 20px; border: none; border-radius: 10px; margin-top: 20px;">
+        Отправить сигнал боту
+    </button>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+    </script>
+</body>
+</html>
