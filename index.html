@@ -3,97 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Галерея шаблонов</title>
+    <title>Замена лица</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { background-color: #1c1c1e; color: white; font-family: sans-serif; padding: 15px; margin: 0; }
-        h2 { text-align: center; margin-bottom: 5px; font-size: 20px;}
-        p.subtitle { text-align: center; color: #aaa; font-size: 13px; margin-bottom: 20px; }
+        body { background-color: #1c1c1e; color: white; font-family: sans-serif; padding: 15px; margin: 0; text-align: center; }
+        h2 { margin-bottom: 5px; font-size: 20px;}
+        p.subtitle { color: #aaa; font-size: 13px; margin-bottom: 20px; }
         .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .template-card { background-color: #2c2c2e; border-radius: 12px; overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: border 0.3s; }
+        .template-card { background-color: #2c2c2e; border-radius: 12px; overflow: hidden; cursor: pointer; border: 2px solid transparent; }
         .template-card.selected { border: 2px solid #2481cc; }
         .template-card img { width: 100%; height: 180px; object-fit: cover; display: block; }
-        .template-info { padding: 8px; text-align: center; }
-        .template-title { font-size: 12px; font-weight: bold; margin-bottom: 4px; }
-        .template-price { font-size: 11px; color: #f1c40f; }
+        .template-info { padding: 8px; }
+        .template-title { font-size: 12px; font-weight: bold; }
         .action-section { margin-top: 25px; display: none; }
         .upload-btn { background-color: #2481cc; color: white; border: none; padding: 15px; font-size: 16px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer; }
-        #preview { max-width: 100%; border-radius: 12px; margin-top: 15px; display: none; border: 2px solid #2481cc; }
-        .reset-btn { background-color: #e74c3c; color: white; border: none; padding: 10px; font-size: 14px; border-radius: 8px; width: 100%; margin-top: 10px; display: none; cursor: pointer; }
+        #preview { max-width: 100%; border-radius: 12px; margin-top: 15px; display: none; }
         #payBtn { background-color: #28a745; color: white; border: none; padding: 15px; font-size: 16px; border-radius: 10px; width: 100%; font-weight: bold; margin-top: 15px; display: none; cursor: pointer; }
+        #resultSection { display: none; margin-top: 20px; }
+        #resultImage { max-width: 100%; border-radius: 12px; border: 2px solid #28a745; }
+        #loader { display: none; margin-top: 20px; font-size: 18px; color: #f1c40f; }
     </style>
 </head>
 <body>
     <h2>Выберите стиль</h2>
-    <p class="subtitle">Нажмите на картинку, чтобы выбрать шаблон</p>
-    
     <div class="gallery">
-        <div class="template-card" onclick="selectTemplate(1, 'Зимняя сказка', '15 Stars')">
+        <div class="template-card" onclick="selectTemplate(1)">
             <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/IMG_20261115_121758_535.jpg?raw=true" alt="Зимняя сказка">
-            <div class="template-info">
-                <div class="template-title">Зимняя сказка</div>
-                <div class="template-price">15 ⭐</div>
-            </div>
+            <div class="template-info"><div class="template-title">Зимняя сказка</div></div>
         </div>
-        <div class="template-card" onclick="selectTemplate(2, 'Киберпанк', '20 Stars')">
+        <div class="template-card" onclick="selectTemplate(2)">
             <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=400&auto=format&fit=crop" alt="Киберпанк">
-            <div class="template-info">
-                <div class="template-title">Киберпанк</div>
-                <div class="template-price">20 ⭐</div>
-            </div>
+            <div class="template-info"><div class="template-title">Киберпанк</div></div>
         </div>
     </div>
 
     <div class="action-section" id="actionSection">
-        <h3 style="text-align:center; margin-bottom: 10px;">Шаг 2: Ваше лицо</h3>
+        <h3>Шаг 2: Ваше лицо</h3>
         <input type="file" id="fileInput" accept="image/*" style="display: none;">
-        
-        <button class="upload-btn" id="uploadBtn">Выбрать фото из галереи</button>
-        
+        <button class="upload-btn" id="uploadBtn">Выбрать фото</button>
         <img id="preview" alt="Ваше фото" />
-        
-        <button class="reset-btn" id="resetBtn">Выбрать другое фото</button>
-        
-        <button id="payBtn">Оплатить и сгенерировать</button>
+        <button id="payBtn">Сгенерировать</button>
+    </div>
+
+    <div id="loader">⏳ Нейросеть работает... Подождите 20-30 секунд.</div>
+    <div id="resultSection">
+        <h3>Ваш результат:</h3>
+        <img id="resultImage" alt="Результат" />
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.ready();
         tg.expand();
-        let selectedTemplateId = null;
         
+        // ВАЖНО: Ссылка на ваш веб-сервер (Deployka)
+        const API_URL = "https://ваш-проект.deployka.dev/api/generate";
+
+        let selectedTemplateId = null;
         const actionSection = document.getElementById('actionSection');
         const fileInput = document.getElementById('fileInput');
         const uploadBtn = document.getElementById('uploadBtn');
         const preview = document.getElementById('preview');
         const payBtn = document.getElementById('payBtn');
-        const resetBtn = document.getElementById('resetBtn');
+        const loader = document.getElementById('loader');
+        const resultSection = document.getElementById('resultSection');
+        const resultImage = document.getElementById('resultImage');
 
-        window.selectTemplate = function(id, title, price) {
+        window.selectTemplate = function(id) {
             selectedTemplateId = id;
-            document.querySelectorAll('.template-card').forEach(card => { card.classList.remove('selected'); });
+            document.querySelectorAll('.template-card').forEach(card => card.classList.remove('selected'));
             event.currentTarget.classList.add('selected');
             actionSection.style.display = 'block';
-            resetPhoto();
+            resultSection.style.display = 'none';
+            preview.style.display = 'none';
+            payBtn.style.display = 'none';
+            uploadBtn.style.display = 'block';
+            fileInput.value = '';
             actionSection.scrollIntoView({ behavior: 'smooth' });
         };
 
-        function resetPhoto() {
-            preview.src = '';
-            preview.style.display = 'none';
-            payBtn.style.display = 'none';
-            resetBtn.style.display = 'none';
-            uploadBtn.style.display = 'block';
-            fileInput.value = '';
-        }
-
-        uploadBtn.addEventListener('click', () => { fileInput.click(); });
-
-        resetBtn.addEventListener('click', () => {
-            resetPhoto();
-            fileInput.click();
-        });
+        uploadBtn.addEventListener('click', () => fileInput.click());
 
         fileInput.addEventListener('change', function(event) {
             const file = event.target.files[0];
@@ -103,24 +92,52 @@
                     preview.src = e.target.result;
                     preview.style.display = 'block';
                     uploadBtn.style.display = 'none'; 
-                    resetBtn.style.display = 'block';
                     payBtn.style.display = 'block'; 
                 }
                 reader.readAsDataURL(file);
             }
         });
 
-        // ГЛАВНОЕ ИЗМЕНЕНИЕ: ОТКРЫВАЕМ ССЫЛКУ ВМЕСТО ОТПРАВКИ ДАННЫХ
-        payBtn.addEventListener('click', () => {
-            // Формируем ссылку с параметром (например, gen_1)
-            const botUsername = "MODOK_NEWS_BOT"; // ВАШ ЮЗЕРНЕЙМ
-            const startParam = `gen_${selectedTemplateId}`;
-            
-            // Открываем ссылку внутри Telegram
-            tg.openTelegramLink(`https://t.me/${botUsername}?start=${startParam}`);
-            
-            // Закрываем Mini App
-            tg.close();
+        // ОТПРАВКА НА СЕРВЕР И ПОЛУЧЕНИЕ РЕЗУЛЬТАТА
+        payBtn.addEventListener('click', async () => {
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            payBtn.style.display = 'none';
+            loader.style.display = 'block';
+
+            const reader = new FileReader();
+            reader.onload = async function(event) {
+                const base64Image = event.target.result.split(',')[1]; 
+                
+                try {
+                    const response = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            image_base64: base64Image,
+                            template_id: selectedTemplateId
+                        })
+                    });
+
+                    const data = await response.json();
+                    
+                    if (data.image_base64) {
+                        resultImage.src = `data:image/jpeg;base64,${data.image_base64}`;
+                        resultSection.style.display = 'block';
+                        loader.style.display = 'none';
+                    } else {
+                        tg.showAlert("Ошибка генерации: " + (data.error || "Неизвестная ошибка"));
+                        payBtn.style.display = 'block';
+                        loader.style.display = 'none';
+                    }
+                } catch (e) {
+                    tg.showAlert("Ошибка сети. Проверьте соединение.");
+                    payBtn.style.display = 'block';
+                    loader.style.display = 'none';
+                }
+            };
+            reader.readAsDataURL(file);
         });
     </script>
 </body>
