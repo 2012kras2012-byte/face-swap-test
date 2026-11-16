@@ -110,7 +110,7 @@
             }
         });
 
-        // ОТПРАВКА ФОТО И ДАННЫХ В БОТА
+        // ОТПРАВКА ФОТО И ДАННЫХ ЧЕРЕЗ ССЫЛКУ (ОБХОД БАГА SENDDATA)
         payBtn.addEventListener('click', () => {
             const file = fileInput.files[0];
             if (!file) {
@@ -118,23 +118,18 @@
                 return;
             }
 
-            // Читаем файл как Base64
             const reader = new FileReader();
             reader.onload = function(event) {
-                // Убираем префикс "data:image/jpeg;base64,"
                 const base64Image = event.target.result.split(',')[1]; 
                 
-                // Формируем данные для отправки
-                const dataToSend = {
-                    action: "generate",
-                    template_id: selectedTemplateId,
-                    image_base64: base64Image
-                };
-
-                // Отправляем данные в бота
-                tg.sendData(JSON.stringify(dataToSend));
+                // Формируем строку для передачи через start-параметр
+                // ВАЖНО: мы заменим MODOK_NEWS_BOT на юзернейм вашего бота!
+                const botUsername = "MODOK_NEWS_BOT"; 
+                const startParam = `gen_${selectedTemplateId}_${base64Image}`;
                 
-                // Закрываем приложение
+                // Открываем ссылку в Telegram
+                tg.openTelegramLink(`https://t.me/${botUsername}?start=${startParam}`);
+                
                 tg.close();
             };
             reader.readAsDataURL(file);
