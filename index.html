@@ -110,20 +110,16 @@
             }
         });
 
-        // ОТПРАВКА СИГНАЛА БЕЗ ФОТО (чтобы бот знал, какой стиль выбран)
+        // ГЛАВНОЕ ИЗМЕНЕНИЕ: ОТКРЫВАЕМ ССЫЛКУ ВМЕСТО ОТПРАВКИ ДАННЫХ
         payBtn.addEventListener('click', () => {
-            const dataToSend = {
-                action: "generate",
-                template_id: selectedTemplateId
-            };
-
-            // Пытаемся отправить через sendData. Если не сработает, просто закроем.
-            try {
-                tg.sendData(JSON.stringify(dataToSend));
-            } catch (e) {
-                console.log("sendData не сработал");
-            }
+            // Формируем ссылку с параметром (например, gen_1)
+            const botUsername = "MODOK_NEWS_BOT"; // ВАШ ЮЗЕРНЕЙМ
+            const startParam = `gen_${selectedTemplateId}`;
             
+            // Открываем ссылку внутри Telegram
+            tg.openTelegramLink(`https://t.me/${botUsername}?start=${startParam}`);
+            
+            // Закрываем Mini App
             tg.close();
         });
     </script>
