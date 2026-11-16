@@ -110,29 +110,22 @@
             }
         });
 
-        // ОТПРАВКА ФОТО И ДАННЫХ ЧЕРЕЗ ССЫЛКУ (ОБХОД БАГА SENDDATA)
+        // ОТПРАВКА СИГНАЛА БЕЗ ФОТО (чтобы бот знал, какой стиль выбран)
         payBtn.addEventListener('click', () => {
-            const file = fileInput.files[0];
-            if (!file) {
-                tg.showAlert("Пожалуйста, выберите фото!");
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const base64Image = event.target.result.split(',')[1]; 
-                
-                // Формируем строку для передачи через start-параметр
-                // ВАЖНО: мы заменим MODOK_NEWS_BOT на юзернейм вашего бота!
-                const botUsername = "MODOK_NEWS_BOT"; 
-                const startParam = `gen_${selectedTemplateId}_${base64Image}`;
-                
-                // Открываем ссылку в Telegram
-                tg.openTelegramLink(`https://t.me/${botUsername}?start=${startParam}`);
-                
-                tg.close();
+            // Отправляем только ID шаблона
+            const dataToSend = {
+                action: "generate",
+                template_id: selectedTemplateId
             };
-            reader.readAsDataURL(file);
+
+            // Пытаемся отправить через sendData. Если не сработает, просто закроем.
+            try {
+                tg.sendData(JSON.stringify(dataToSend));
+            } catch (e) {
+                console.log("sendData не сработал");
+            }
+            
+            tg.close();
         });
     </script>
 </body>
