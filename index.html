@@ -112,7 +112,6 @@
 
         // ОТПРАВКА СИГНАЛА БЕЗ ФОТО (чтобы бот знал, какой стиль выбран)
         payBtn.addEventListener('click', () => {
-            // Отправляем только ID шаблона
             const dataToSend = {
                 action: "generate",
                 template_id: selectedTemplateId
