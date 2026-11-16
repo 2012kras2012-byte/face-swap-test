@@ -62,6 +62,7 @@
         tg.ready();
         tg.expand();
         let selectedTemplateId = null;
+        
         const actionSection = document.getElementById('actionSection');
         const fileInput = document.getElementById('fileInput');
         const uploadBtn = document.getElementById('uploadBtn');
@@ -109,19 +110,34 @@
             }
         });
 
-        // НОВАЯ ЛОГИКА ОПЛАТЫ И ПЕРЕДАЧИ ДАННЫХ (Обход бага sendData)
+        // ОТПРАВКА ФОТО И ДАННЫХ В БОТА
         payBtn.addEventListener('click', () => {
-            // Юзернейм бота (ОБЯЗАТЕЛЬНО БЕЗ @)
-            const botUsername = "MODOK_NEWS_BOT"; 
-            
-            // Формируем параметр, который передадим боту (например, gen_1)
-            const startParam = `gen_${selectedTemplateId}`;
-            
-            // Открываем Telegram по специальной ссылке (это сработает везде)
-            tg.openTelegramLink(`https://t.me/${botUsername}?start=${startParam}`);
-            
-            // Закрываем приложение
-            tg.close();
+            const file = fileInput.files[0];
+            if (!file) {
+                tg.showAlert("Пожалуйста, выберите фото!");
+                return;
+            }
+
+            // Читаем файл как Base64
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                // Убираем префикс "data:image/jpeg;base64,"
+                const base64Image = event.target.result.split(',')[1]; 
+                
+                // Формируем данные для отправки
+                const dataToSend = {
+                    action: "generate",
+                    template_id: selectedTemplateId,
+                    image_base64: base64Image
+                };
+
+                // Отправляем данные в бота
+                tg.sendData(JSON.stringify(dataToSend));
+                
+                // Закрываем приложение
+                tg.close();
+            };
+            reader.readAsDataURL(file);
         });
     </script>
 </body>
