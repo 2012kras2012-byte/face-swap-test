@@ -18,6 +18,7 @@
         .action-section { margin-top: 25px; display: none; }
         .upload-btn { background-color: #2481cc; color: white; border: none; padding: 15px; font-size: 16px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer; }
         #preview { max-width: 100%; border-radius: 12px; margin-top: 15px; display: none; }
+        #resetBtn { background-color: #e74c3c; color: white; border: none; padding: 10px; font-size: 14px; border-radius: 8px; width: 100%; margin-top: 10px; display: none; cursor: pointer; }
         #payBtn { background-color: #28a745; color: white; border: none; padding: 15px; font-size: 16px; border-radius: 10px; width: 100%; font-weight: bold; margin-top: 15px; display: none; cursor: pointer; }
         #resultSection { display: none; margin-top: 20px; }
         #resultImage { max-width: 100%; border-radius: 12px; border: 2px solid #28a745; }
@@ -41,7 +42,12 @@
         <h3>Шаг 2: Ваше лицо</h3>
         <input type="file" id="fileInput" accept="image/*" style="display: none;">
         <button class="upload-btn" id="uploadBtn">Выбрать фото</button>
+        
         <img id="preview" alt="Ваше фото" />
+        
+        <!-- ВОЗВРАЩЕНА КРАСНАЯ КНОПКА -->
+        <button id="resetBtn">Выбрать другое фото</button>
+        
         <button id="payBtn">Сгенерировать</button>
     </div>
 
@@ -56,7 +62,7 @@
         tg.ready();
         tg.expand();
         
-        // ВСТАВЛЕН ВАШ АДРЕС ИЗ DEPLOYKA
+        // ИЗМЕНЕН АДРЕС: добавлен /api в путь
         const API_URL = "https://newface.deployka.dev/api/generate";
 
         let selectedTemplateId = null;
@@ -64,6 +70,7 @@
         const fileInput = document.getElementById('fileInput');
         const uploadBtn = document.getElementById('uploadBtn');
         const preview = document.getElementById('preview');
+        const resetBtn = document.getElementById('resetBtn');
         const payBtn = document.getElementById('payBtn');
         const loader = document.getElementById('loader');
         const resultSection = document.getElementById('resultSection');
@@ -74,15 +81,25 @@
             document.querySelectorAll('.template-card').forEach(card => card.classList.remove('selected'));
             event.currentTarget.classList.add('selected');
             actionSection.style.display = 'block';
-            resultSection.style.display = 'none';
-            preview.style.display = 'none';
-            payBtn.style.display = 'none';
-            uploadBtn.style.display = 'block';
-            fileInput.value = '';
+            resetPhoto();
             actionSection.scrollIntoView({ behavior: 'smooth' });
         };
 
-        uploadBtn.addEventListener('click', () => fileInput.click());
+        function resetPhoto() {
+            preview.src = '';
+            preview.style.display = 'none';
+            payBtn.style.display = 'none';
+            resetBtn.style.display = 'none';
+            uploadBtn.style.display = 'block';
+            fileInput.value = '';
+        }
+
+        uploadBtn.addEventListener('click', () => { fileInput.click(); });
+
+        resetBtn.addEventListener('click', () => {
+            resetPhoto();
+            fileInput.click();
+        });
 
         fileInput.addEventListener('change', function(event) {
             const file = event.target.files[0];
@@ -92,6 +109,7 @@
                     preview.src = e.target.result;
                     preview.style.display = 'block';
                     uploadBtn.style.display = 'none'; 
+                    resetBtn.style.display = 'block'; // Показываем красную кнопку
                     payBtn.style.display = 'block'; 
                 }
                 reader.readAsDataURL(file);
@@ -103,6 +121,7 @@
             if (!file) return;
 
             payBtn.style.display = 'none';
+            resetBtn.style.display = 'none';
             loader.style.display = 'block';
 
             const reader = new FileReader();
@@ -128,11 +147,13 @@
                     } else {
                         tg.showAlert("Ошибка генерации: " + (data.error || "Неизвестная ошибка"));
                         payBtn.style.display = 'block';
+                        resetBtn.style.display = 'block';
                         loader.style.display = 'none';
                     }
                 } catch (e) {
                     tg.showAlert("Ошибка сети. Проверьте соединение.");
                     payBtn.style.display = 'block';
+                    resetBtn.style.display = 'block';
                     loader.style.display = 'none';
                 }
             };
