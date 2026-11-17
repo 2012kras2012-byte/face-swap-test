@@ -44,10 +44,7 @@
         <button class="upload-btn" id="uploadBtn">Выбрать фото</button>
         
         <img id="preview" alt="Ваше фото" />
-        
-        <!-- ВОЗВРАЩЕНА КРАСНАЯ КНОПКА -->
         <button id="resetBtn">Выбрать другое фото</button>
-        
         <button id="payBtn">Сгенерировать</button>
     </div>
 
@@ -62,7 +59,6 @@
         tg.ready();
         tg.expand();
         
-        // ИЗМЕНЕН АДРЕС: добавлен /api в путь
         const API_URL = "https://newface.deployka.dev/api/generate";
 
         let selectedTemplateId = null;
@@ -95,11 +91,7 @@
         }
 
         uploadBtn.addEventListener('click', () => { fileInput.click(); });
-
-        resetBtn.addEventListener('click', () => {
-            resetPhoto();
-            fileInput.click();
-        });
+        resetBtn.addEventListener('click', () => { resetPhoto(); fileInput.click(); });
 
         fileInput.addEventListener('change', function(event) {
             const file = event.target.files[0];
@@ -109,7 +101,7 @@
                     preview.src = e.target.result;
                     preview.style.display = 'block';
                     uploadBtn.style.display = 'none'; 
-                    resetBtn.style.display = 'block'; // Показываем красную кнопку
+                    resetBtn.style.display = 'block';
                     payBtn.style.display = 'block'; 
                 }
                 reader.readAsDataURL(file);
