@@ -56,8 +56,8 @@
         tg.ready();
         tg.expand();
         
-        // ВАЖНО: Ссылка на ваш веб-сервер (Deployka)
-        const API_URL = "https://ваш-проект.deployka.dev/api/generate";
+        // ВСТАВЛЕН ВАШ АДРЕС ИЗ DEPLOYKA
+        const API_URL = "https://newface.deployka.dev/api/generate";
 
         let selectedTemplateId = null;
         const actionSection = document.getElementById('actionSection');
@@ -98,7 +98,6 @@
             }
         });
 
-        // ОТПРАВКА НА СЕРВЕР И ПОЛУЧЕНИЕ РЕЗУЛЬТАТА
         payBtn.addEventListener('click', async () => {
             const file = fileInput.files[0];
             if (!file) return;
