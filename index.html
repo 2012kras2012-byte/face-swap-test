@@ -28,12 +28,14 @@
 <body>
     <h2>Выберите стиль</h2>
     <div class="gallery">
-        <div class="template-card" onclick="selectTemplate(1)">
+        <!-- Добавил передачу 'this' в функцию, чтобы точно находить нужную карточку -->
+        <div class="template-card" onclick="selectTemplate(1, this)">
             <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/IMG_20261115_121758_535.jpg?raw=true" alt="Зимняя сказка">
             <div class="template-info"><div class="template-title">Зимняя сказка</div></div>
         </div>
-        <div class="template-card" onclick="selectTemplate(2)">
-            <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=400&auto=format&fit=crop" alt="Киберпанк">
+        <!-- Заменил битую ссылку на рабочую картинку -->
+        <div class="template-card" onclick="selectTemplate(2, this)">
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=400&auto=format&fit=crop" alt="Киберпанк">
             <div class="template-info"><div class="template-title">Киберпанк</div></div>
         </div>
     </div>
@@ -59,7 +61,6 @@
         tg.ready();
         tg.expand();
         
-        // ОБНОВЛЕННЫЙ АДРЕС API НА AMVERA
         const API_URL = "https://face-iv2026.waw0.amvera.tech/api/generate";
 
         let selectedTemplateId = null;
@@ -73,10 +74,16 @@
         const resultSection = document.getElementById('resultSection');
         const resultImage = document.getElementById('resultImage');
 
-        window.selectTemplate = function(id) {
+        // Переписал функцию выбора, чтобы она работала стабильно
+        window.selectTemplate = function(id, element) {
             selectedTemplateId = id;
+            
+            // Убираем выделение со всех карточек
             document.querySelectorAll('.template-card').forEach(card => card.classList.remove('selected'));
-            event.currentTarget.classList.add('selected');
+            // Добавляем выделение на нажатую
+            element.classList.add('selected');
+            
+            // Показываем блок с загрузкой фото
             actionSection.style.display = 'block';
             resetPhoto();
             actionSection.scrollIntoView({ behavior: 'smooth' });
