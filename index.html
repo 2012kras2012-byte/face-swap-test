@@ -22,6 +22,7 @@
         #resultSection { display: none; margin-top: 20px; }
         #resultImage { max-width: 100%; border-radius: 12px; border: 2px solid #28a745; }
         #loader { display: none; margin-top: 20px; font-size: 18px; color: #f1c40f; }
+        #hint { font-size: 14px; color: #28a745; margin-top: 10px; display: none; }
     </style>
 </head>
 <body>
@@ -51,12 +52,16 @@
     <div id="resultSection">
         <h3>Ваш результат:</h3>
         <img id="resultImage" alt="Результат" />
+        <div id="hint">Фото также отправлено в чат с ботом!</div>
     </div>
 
     <script>
-        const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : { showAlert: function(msg) { alert(msg); } };
+        const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : { showAlert: function(msg) { alert(msg); }, initDataUnsafe: {} };
         
         const API_URL = "https://face-iv2026.waw0.amvera.tech/api/generate";
+        
+        // Получаем ID пользователя Telegram
+        const userId = tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
 
         let selectedTemplateId = null;
 
@@ -75,6 +80,8 @@
             document.getElementById('resetBtn').style.display = 'none';
             document.getElementById('uploadBtn').style.display = 'block';
             document.getElementById('fileInput').value = '';
+            document.getElementById('resultSection').style.display = 'none';
+            document.getElementById('hint').style.display = 'none';
             
             actionSection.scrollIntoView({ behavior: 'smooth' });
         };
@@ -109,6 +116,8 @@
             document.getElementById('payBtn').style.display = 'none';
             document.getElementById('resetBtn').style.display = 'none';
             document.getElementById('loader').style.display = 'block';
+            document.getElementById('resultSection').style.display = 'none';
+            document.getElementById('hint').style.display = 'none';
 
             var reader = new FileReader();
             reader.onload = async function(event) {
@@ -120,7 +129,8 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             image_base64: base64Image,
-                            template_id: selectedTemplateId
+                            template_id: selectedTemplateId,
+                            user_id: userId // <-- ОТПРАВЛЯЕМ ID НА СЕРВЕР
                         })
                     });
 
@@ -130,6 +140,11 @@
                         document.getElementById('resultImage').src = 'data:image/jpeg;base64,' + data.image_base64;
                         document.getElementById('resultSection').style.display = 'block';
                         document.getElementById('loader').style.display = 'none';
+                        
+                        // Показываем подсказку, что фото отправлено в чат
+                        if (userId) {
+                            document.getElementById('hint').style.display = 'block';
+                        }
                     } else {
                         tg.showAlert("Ошибка генерации: " + (data.error || "Неизвестная ошибка"));
                         document.getElementById('payBtn').style.display = 'block';
