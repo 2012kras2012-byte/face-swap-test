@@ -36,6 +36,38 @@
             <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=400&auto=format&fit=crop" alt="Киберпанк">
             <div class="template-info"><div class="template-title">Киберпанк</div></div>
         </div>
+        <div class="template-card" onclick="selectTemplate(3, this)">
+            <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo1.JPG?raw=true" alt="Стиль 1">
+            <div class="template-info"><div class="template-title">Стиль 1</div></div>
+        </div>
+        <div class="template-card" onclick="selectTemplate(4, this)">
+            <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo2.JPG?raw=true" alt="Стиль 2">
+            <div class="template-info"><div class="template-title">Стиль 2</div></div>
+        </div>
+        <div class="template-card" onclick="selectTemplate(5, this)">
+            <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo3.JPG?raw=true" alt="Стиль 3">
+            <div class="template-info"><div class="template-title">Стиль 3</div></div>
+        </div>
+        <div class="template-card" onclick="selectTemplate(6, this)">
+            <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo4.JPG?raw=true" alt="Стиль 4">
+            <div class="template-info"><div class="template-title">Стиль 4</div></div>
+        </div>
+        <div class="template-card" onclick="selectTemplate(7, this)">
+            <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo5.JPG?raw=true" alt="Стиль 5">
+            <div class="template-info"><div class="template-title">Стиль 5</div></div>
+        </div>
+        <div class="template-card" onclick="selectTemplate(8, this)">
+            <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo6.JPG?raw=true" alt="Стиль 6">
+            <div class="template-info"><div class="template-title">Стиль 6</div></div>
+        </div>
+        <div class="template-card" onclick="selectTemplate(9, this)">
+            <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo7.JPG?raw=true" alt="Стиль 7">
+            <div class="template-info"><div class="template-title">Стиль 7</div></div>
+        </div>
+        <div class="template-card" onclick="selectTemplate(10, this)">
+            <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo8.JPG?raw=true" alt="Стиль 8">
+            <div class="template-info"><div class="template-title">Стиль 8</div></div>
+        </div>
     </div>
 
     <div class="action-section" id="actionSection">
@@ -60,7 +92,6 @@
         
         const API_URL = "https://face-iv2026.waw0.amvera.tech/api/generate";
         
-        // Получаем ID пользователя Telegram
         const userId = tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
 
         let selectedTemplateId = null;
@@ -130,7 +161,7 @@
                         body: JSON.stringify({
                             image_base64: base64Image,
                             template_id: selectedTemplateId,
-                            user_id: userId // <-- ОТПРАВЛЯЕМ ID НА СЕРВЕР
+                            user_id: userId
                         })
                     });
 
@@ -141,7 +172,6 @@
                         document.getElementById('resultSection').style.display = 'block';
                         document.getElementById('loader').style.display = 'none';
                         
-                        // Показываем подсказку, что фото отправлено в чат
                         if (userId) {
                             document.getElementById('hint').style.display = 'block';
                         }
