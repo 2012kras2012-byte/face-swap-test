@@ -14,8 +14,16 @@
         .template-card img { width: 100%; aspect-ratio: 4/5; object-fit: cover; display: block; }
         .template-info { padding: 8px; }
         .template-title { font-size: 12px; font-weight: bold; }
-        .action-section { margin-top: 25px; display: none; }
-        .upload-btn { background-color: #2481cc; color: white; border: none; padding: 15px; font-size: 16px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer; }
+        
+        .action-section { margin-top: 25px; display: none; text-align: left; background: #2c2c2e; padding: 15px; border-radius: 12px; }
+        .action-section h3 { text-align: center; margin-top: 0; }
+        
+        .setting-group { margin-bottom: 15px; background: #1c1c1e; padding: 10px; border-radius: 8px; }
+        .checkbox-label { display: flex; align-items: center; font-size: 14px; font-weight: bold; cursor: pointer; }
+        .checkbox-label input { margin-right: 10px; width: 18px; height: 18px; }
+        .select-box { width: 100%; padding: 10px; margin-top: 10px; border-radius: 8px; border: none; background: #3a3a3c; color: white; display: none; }
+
+        .upload-btn { background-color: #2481cc; color: white; border: none; padding: 15px; font-size: 16px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; }
         #preview { max-width: 100%; border-radius: 12px; margin-top: 15px; display: none; }
         #resetBtn { background-color: #e74c3c; color: white; border: none; padding: 10px; font-size: 14px; border-radius: 8px; width: 100%; margin-top: 10px; display: none; cursor: pointer; }
         #payBtn { background-color: #28a745; color: white; border: none; padding: 15px; font-size: 16px; border-radius: 10px; width: 100%; font-weight: bold; margin-top: 15px; display: none; cursor: pointer; }
@@ -28,69 +36,92 @@
 <body>
     <h2>Выберите стиль</h2>
     <div class="gallery">
-        <!-- 1: Девушка с икрой (улица) -->
         <div class="template-card" onclick="selectTemplate(1, this)">
             <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/IMG_20261115_121758_535.jpg?raw=true" alt="Зимняя сказка">
             <div class="template-info"><div class="template-title">Зимняя сказка</div></div>
         </div>
-        
-        <!-- 2: Девушка с шариками - Photo1 -->
         <div class="template-card" onclick="selectTemplate(2, this)">
-            <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo1.JPG?raw=true" alt="Новогодний шар">
-            <div class="template-info"><div class="template-title">Новогодний шар</div></div>
-        </div>
-        
-        <!-- 3: Девушка с бенгальским огнем (бокал) - Photo9 -->
-        <div class="template-card" onclick="selectTemplate(3, this)">
             <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo9.JPG?raw=true" alt="Новогодняя ночь">
             <div class="template-info"><div class="template-title">Новогодняя ночь</div></div>
         </div>
-
-        <!-- 4: Девушка в красном свитере - Photo8 -->
+        <div class="template-card" onclick="selectTemplate(3, this)">
+            <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo1.JPG?raw=true" alt="Новогодний шар">
+            <div class="template-info"><div class="template-title">Новогодний шар</div></div>
+        </div>
         <div class="template-card" onclick="selectTemplate(4, this)">
-            <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo8.JPG?raw=true" alt="Уютный вечер">
+            <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo2.JPG?raw=true" alt="Уютный вечер">
             <div class="template-info"><div class="template-title">Уютный вечер</div></div>
         </div>
-
-        <!-- 5: Телефонная будка - Photo7 -->
         <div class="template-card" onclick="selectTemplate(5, this)">
-            <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo7.JPG?raw=true" alt="Красный телефон">
+            <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo3.JPG?raw=true" alt="Красный телефон">
             <div class="template-info"><div class="template-title">Красный телефон</div></div>
         </div>
-
-        <!-- 6: Девушка с козой - Photo4 -->
         <div class="template-card" onclick="selectTemplate(6, this)">
             <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo4.JPG?raw=true" alt="С Новым годом!">
-            <div class="template-info"><div class="template-title">Красная машина</div></div>
+            <div class="template-info"><div class="template-title">С Новым годом!</div></div>
         </div>
-
-        <!-- 7: 2027 - Photo5 -->
         <div class="template-card" onclick="selectTemplate(7, this)">
             <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo5.JPG?raw=true" alt="2027">
             <div class="template-info"><div class="template-title">2027</div></div>
         </div>
-
-        <!-- 8: Красная машинка - Photo6 -->
         <div class="template-card" onclick="selectTemplate(8, this)">
             <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo6.JPG?raw=true" alt="Красная машинка">
-            <div class="template-info"><div class="template-title">С новым годом!</div></div>
+            <div class="template-info"><div class="template-title">Красная машинка</div></div>
         </div>
-
-        <!-- 9: На снегу (красное/черное) - Photo3 -->
         <div class="template-card" onclick="selectTemplate(9, this)">
-            <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo3.JPG?raw=true" alt="Красное и черное">
-            <div class="template-info"><div class="template-title">Красное чёрное</div></div>
+            <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo7.JPG?raw=true" alt="Красное и черное">
+            <div class="template-info"><div class="template-title">Красное и черное</div></div>
         </div>
-
-        <!-- 10: Розовое платье - Photo2 -->
         <div class="template-card" onclick="selectTemplate(10, this)">
-            <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo2.JPG?raw=true" alt="Розовый праздник">
+            <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo8.JPG?raw=true" alt="Розовый праздник">
             <div class="template-info"><div class="template-title">Розовый праздник</div></div>
         </div>
     </div>
 
     <div class="action-section" id="actionSection">
-        <h3>Шаг 2: Ваше лицо</h3>
+        <h3>Настройки</h3>
+        
+        <!-- НАСТРОЙКА ЦВЕТА ВОЛОС -->
+        <div class="setting-group">
+            <label class="checkbox-label">
+                <input type="checkbox" id="hairColorCheckbox">
+                Сменить цвет волос
+            </label>
+            <select id="hairColor" class="select-box">
+                <option value="blonde">Блонд</option>
+                <option value="brunette">Брюнетка</option>
+                <option value="redhead">Рыжий</option>
+                <option value="black">Черный</option>
+                <option value="pink">Розовый</option>
+            </select>
+        </div>
+
+        <!-- НАСТРОЙКА СТРУКТУРЫ ВОЛОС (НОВОЕ) -->
+        <div class="setting-group">
+            <label class="checkbox-label">
+                <input type="checkbox" id="hairStyleCheckbox">
+                Изменить структуру волос
+            </label>
+            <select id="hairStyle" class="select-box">
+                <option value="straight">Прямые</option>
+                <option value="curly">Кудрявые</option>
+                <option value="wavy">Волнистые</option>
+            </select>
+        </div>
+
+        <!-- НАСТРОЙКА ТЕЛОСЛОЖЕНИЯ -->
+        <div class="setting-group">
+            <label class="checkbox-label">
+                <input type="checkbox" id="bodyCheckbox">
+                Изменить телосложение
+            </label>
+            <select id="bodyType" class="select-box">
+                <option value="slim">Стройная (42-44)</option>
+                <option value="average">Среднее (46-48)</option>
+                <option value="curvy">Пышные формы (50+)</option>
+            </select>
+        </div>
+
         <input type="file" id="fileInput" accept="image/*" style="display: none;">
         <button class="upload-btn" id="uploadBtn">Выбрать фото</button>
         
@@ -108,19 +139,26 @@
 
     <script>
         const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : { showAlert: function(msg) { alert(msg); }, initDataUnsafe: {} };
-        
         const API_URL = "https://face-iv2026.waw0.amvera.tech/api/generate";
-        
         const userId = tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : null;
 
         let selectedTemplateId = null;
         let compressedBase64 = null;
 
+        // Логика показа выпадающих списков при клике на чекбоксы
+        document.getElementById('hairColorCheckbox').addEventListener('change', function(e) {
+            document.getElementById('hairColor').style.display = e.target.checked ? 'block' : 'none';
+        });
+        document.getElementById('hairStyleCheckbox').addEventListener('change', function(e) {
+            document.getElementById('hairStyle').style.display = e.target.checked ? 'block' : 'none';
+        });
+        document.getElementById('bodyCheckbox').addEventListener('change', function(e) {
+            document.getElementById('bodyType').style.display = e.target.checked ? 'block' : 'none';
+        });
+
         window.selectTemplate = function(id, element) {
             selectedTemplateId = id;
-            document.querySelectorAll('.template-card').forEach(function(card) {
-                card.classList.remove('selected');
-            });
+            document.querySelectorAll('.template-card').forEach(function(card) { card.classList.remove('selected'); });
             element.classList.add('selected');
             
             var actionSection = document.getElementById('actionSection');
@@ -138,13 +176,8 @@
             actionSection.scrollIntoView({ behavior: 'smooth' });
         };
 
-        document.getElementById('uploadBtn').addEventListener('click', function() {
-            document.getElementById('fileInput').click();
-        });
-
-        document.getElementById('resetBtn').addEventListener('click', function() {
-            document.getElementById('fileInput').click();
-        });
+        document.getElementById('uploadBtn').addEventListener('click', function() { document.getElementById('fileInput').click(); });
+        document.getElementById('resetBtn').addEventListener('click', function() { document.getElementById('fileInput').click(); });
 
         document.getElementById('fileInput').addEventListener('change', function(event) {
             var file = event.target.files[0];
@@ -156,23 +189,14 @@
                 img.onload = function() {
                     var canvas = document.createElement('canvas');
                     var ctx = canvas.getContext('2d');
-                    
                     var max_size = 1024;
                     var width = img.width;
                     var height = img.height;
-                    
                     if (width > height) {
-                        if (width > max_size) {
-                            height *= max_size / width;
-                            width = max_size;
-                        }
+                        if (width > max_size) { height *= max_size / width; width = max_size; }
                     } else {
-                        if (height > max_size) {
-                            width *= max_size / height;
-                            height = max_size;
-                        }
+                        if (height > max_size) { width *= max_size / height; height = max_size; }
                     }
-                    
                     canvas.width = width;
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
@@ -194,6 +218,15 @@
         document.getElementById('payBtn').addEventListener('click', async function() {
             if (!compressedBase64) return;
 
+            const hairColorCheck = document.getElementById('hairColorCheckbox').checked;
+            const hairColorVal = document.getElementById('hairColor').value;
+            
+            const hairStyleCheck = document.getElementById('hairStyleCheckbox').checked;
+            const hairStyleVal = document.getElementById('hairStyle').value;
+            
+            const bodyCheck = document.getElementById('bodyCheckbox').checked;
+            const bodyVal = document.getElementById('bodyType').value;
+
             document.getElementById('payBtn').style.display = 'none';
             document.getElementById('resetBtn').style.display = 'none';
             document.getElementById('loader').style.display = 'block';
@@ -207,7 +240,10 @@
                     body: JSON.stringify({
                         image_base64: compressedBase64,
                         template_id: selectedTemplateId,
-                        user_id: userId
+                        user_id: userId,
+                        custom_hair_color: hairColorCheck ? hairColorVal : null,
+                        custom_hair_style: hairStyleCheck ? hairStyleVal : null,
+                        custom_body: bodyCheck ? bodyVal : null
                     })
                 });
 
@@ -217,18 +253,15 @@
                     document.getElementById('resultImage').src = 'data:image/jpeg;base64,' + data.image_base64;
                     document.getElementById('resultSection').style.display = 'block';
                     document.getElementById('loader').style.display = 'none';
-                    
-                    if (userId) {
-                        document.getElementById('hint').style.display = 'block';
-                    }
+                    if (userId) { document.getElementById('hint').style.display = 'block'; }
                 } else {
-                    tg.showAlert("Ошибка генерации: " + (data.error || "Неизвестная ошибка"));
+                    tg.showAlert("Ошибка: " + (data.error || "Неизвестно"));
                     document.getElementById('payBtn').style.display = 'block';
                     document.getElementById('resetBtn').style.display = 'block';
                     document.getElementById('loader').style.display = 'none';
                 }
             } catch (e) {
-                tg.showAlert("Ошибка сети. Проверьте соединение.");
+                tg.showAlert("Ошибка сети.");
                 document.getElementById('payBtn').style.display = 'block';
                 document.getElementById('resetBtn').style.display = 'block';
                 document.getElementById('loader').style.display = 'none';
