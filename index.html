@@ -25,7 +25,11 @@
         .upload-btn { background-color: #2481cc; color: white; border: none; padding: 15px; font-size: 16px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; }
         #preview { max-width: 100%; border-radius: 12px; margin-top: 15px; display: none; }
         #resetBtn { background-color: #e74c3c; color: white; border: none; padding: 10px; font-size: 14px; border-radius: 8px; width: 100%; margin-top: 10px; display: none; cursor: pointer; }
-        #payBtn { background-color: #28a745; color: white; border: none; padding: 15px; font-size: 16px; border-radius: 10px; width: 100%; font-weight: bold; margin-top: 15px; display: none; cursor: pointer; }
+        
+        /* Стили для кнопки оплаты и цены */
+        .price-tag { color: #ffd700; font-size: 18px; font-weight: bold; text-align: center; margin-top: 15px; display: none; }
+        #payBtn { background-color: #28a745; color: white; border: none; padding: 15px; font-size: 16px; border-radius: 10px; width: 100%; font-weight: bold; margin-top: 5px; display: none; cursor: pointer; }
+        
         #resultSection { display: none; margin-top: 20px; }
         #resultImage { max-width: 100%; border-radius: 12px; border: 2px solid #28a745; }
         #loader { display: none; margin-top: 20px; font-size: 18px; color: #f1c40f; }
@@ -35,7 +39,7 @@
 <body>
     <h2>Выберите стиль</h2>
     <div class="gallery">
-        <!-- СТАРЫЕ 10 ШАБЛОНОВ -->
+        <!-- 1-10 СТАРЫЕ -->
         <div class="template-card" onclick="selectTemplate(1, this)">
             <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/IMG_20261115_121758_535.jpg?raw=true" alt="Зимняя сказка">
             <div class="template-info"><div class="template-title">Зимняя сказка</div></div>
@@ -77,7 +81,7 @@
             <div class="template-info"><div class="template-title">Розовый праздник</div></div>
         </div>
 
-        <!-- НОВЫЕ 16 ШАБЛОНОВ -->
+        <!-- 11-26 НОВЫЕ -->
         <div class="template-card" onclick="selectTemplate(11, this)">
             <img src="https://github.com/2012kras2012-byte/face-swap-test/blob/main/Photo10.JPG?raw=true" alt="Новогодние серьги">
             <div class="template-info"><div class="template-title">Новогодние серьги</div></div>
@@ -190,6 +194,9 @@
         
         <img id="preview" alt="Ваше фото" />
         <button id="resetBtn">Выбрать другое фото</button>
+        
+        <!-- БЛОК С ЦЕНОЙ ДЛЯ ЮKASSA -->
+        <div class="price-tag" id="priceTag">Стоимость генерации: 50 ₽</div>
         <button id="payBtn">Сгенерировать</button>
     </div>
 
@@ -229,6 +236,7 @@
             actionSection.style.display = 'block';
             
             document.getElementById('preview').style.display = 'none';
+            document.getElementById('priceTag').style.display = 'none';
             document.getElementById('payBtn').style.display = 'none';
             document.getElementById('resetBtn').style.display = 'none';
             document.getElementById('uploadBtn').style.display = 'block';
@@ -272,6 +280,7 @@
                     document.getElementById('preview').style.display = 'block';
                     document.getElementById('uploadBtn').style.display = 'none'; 
                     document.getElementById('resetBtn').style.display = 'block';
+                    document.getElementById('priceTag').style.display = 'block'; // Показываем цену
                     document.getElementById('payBtn').style.display = 'block'; 
                 };
                 img.src = e.target.result;
@@ -293,6 +302,7 @@
 
             document.getElementById('payBtn').style.display = 'none';
             document.getElementById('resetBtn').style.display = 'none';
+            document.getElementById('priceTag').style.display = 'none';
             document.getElementById('loader').style.display = 'block';
             document.getElementById('resultSection').style.display = 'none';
             document.getElementById('hint').style.display = 'none';
@@ -320,12 +330,14 @@
                     if (userId) { document.getElementById('hint').style.display = 'block'; }
                 } else {
                     tg.showAlert("Ошибка: " + (data.error || "Неизвестная ошибка"));
+                    document.getElementById('priceTag').style.display = 'block';
                     document.getElementById('payBtn').style.display = 'block';
                     document.getElementById('resetBtn').style.display = 'block';
                     document.getElementById('loader').style.display = 'none';
                 }
             } catch (e) {
                 tg.showAlert("Ошибка сети. Проверьте соединение.");
+                document.getElementById('priceTag').style.display = 'block';
                 document.getElementById('payBtn').style.display = 'block';
                 document.getElementById('resetBtn').style.display = 'block';
                 document.getElementById('loader').style.display = 'none';
